@@ -1,30 +1,67 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from "vue";
+import Item from "./components/Item.vue";
+import List from "./components/List.vue";
+import Switch from "./components/Switch.vue";
+import { SwitchOption } from "./types";
+import Animals from "./components/Animals.vue";
+import Farm from "./components/Farm.vue";
+import Panel from "./components/Panel.vue";
+import Buttons from "./components/Buttons.vue";
+
+const selectedOptionFromSwitch = ref<SwitchOption | undefined>(undefined);
+
+const onSelectedOptionFromSwitchChange = (option: SwitchOption) => {
+  selectedOptionFromSwitch.value = option;
+};
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div
+    class="h-full flex flex-wrap gap-4 place-items-center place-content-center"
+  >
+    <Item
+      :id="42"
+      name="Answer to the Ultimate Question of Life, the Universe, and Everything"
+    />
+
+    <List
+      title="Animals but 'Dog' selected!"
+      :items="['Horse', 'Dog', 'Cat']"
+      selected="Dog"
+    />
+
+    <Switch
+      :selectedOption="selectedOptionFromSwitch"
+      @switchOption="onSelectedOptionFromSwitchChange"
+    />
+
+    <Animals>
+      <template #horse="{ label }">
+        Horse's name: <span class="font-bold">{{ label }}</span>
+      </template>
+
+      <template #dog="{ label }">
+        Dog's name: <span class="font-bold">{{ label }}</span>
+      </template>
+
+      <template #cat="{ label }">
+        Cats' name: <span class="font-bold">{{ label }}</span>
+      </template>
+    </Animals>
+
+    <Farm />
+
+    <Panel class="this-class-wont-show-because-of-inherit-attrs-false" />
+
+    <Buttons title="Refs Counter" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.this-class-wont-show-because-of-inherit-attrs-false {
+  background-color: red;
+  border: 5px solid yellow;
+  color: yellow
 }
 </style>
